@@ -32,5 +32,5 @@ const result = {
 // Write result file
 fs.writeFileSync("result.json", JSON.stringify(result, null, 2))
 
-console.log("✅ Result generated:")
-console.log(result)
+// console.log("✅ Result generated:")
+// console.log(result)
