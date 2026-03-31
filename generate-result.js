@@ -6,16 +6,20 @@ let totalTests = 0
 let passedTests = 0
 
 try {
+  if (!fs.existsSync("results.json")) {
+    throw new Error("results.json not found")
+  }
+
   const testData = JSON.parse(fs.readFileSync("results.json", "utf-8"))
 
   totalTests = testData.numTotalTests || 0
   passedTests = testData.numPassedTests || 0
 
 } catch (err) {
-  console.error("Error reading test results:", err.message)
+  console.error("❌ Error reading test results:", err.message)
 }
 
-// Safe score calculation
+// ✅ Safe score calculation
 const score =
   totalTests === 0 ? 0 : Math.round((passedTests / totalTests) * 100)
 
@@ -29,8 +33,7 @@ const result = {
   timestamp: new Date().toISOString()
 }
 
-// Write result file
+// ✅ Write result file
 fs.writeFileSync("result.json", JSON.stringify(result, null, 2))
 
-// console.log("✅ Result generated:")
-// console.log(result)
+console.log("✅ Final Result:", result)

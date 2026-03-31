@@ -26,8 +26,8 @@ jobs:
       - name: 📦 Install Dependencies
         run: npm install
 
-      - name: 🧪 Run Tests (Capture Output)
-        run: npm test -- --json --outputFile=results.json || true
+      - name: Run Tests and Save Output
+        run:  npm test -- --json --outputFile=results.json || true
 
       - name: ⚙️ Generate Result
         run: node generate-result.js
