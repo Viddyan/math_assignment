@@ -1,0 +1,43 @@
+# .github/workflows/evaluation.yml
+
+name: Evaluation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "package.json"
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install Dependencies
+        run: npm install
+
+      - name: 🧪 Run Tests (Capture Output)
+        run: npm test -- --json --outputFile=results.json || true
+
+      - name: ⚙️ Generate Result
+        run: node generate-result.js
+
+      - name: 🔍 Debug Result
+        run: cat result.json
+
+      - name: 📡 Send Result to Server
+        run: |
+          curl -X POST https://evaldataservice-production.up.railway.app/api/results \
+          -H "Content-Type: application/json" \
+          -d @result.json \
+          --fail --show-error
