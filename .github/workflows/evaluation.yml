@@ -27,13 +27,18 @@ jobs:
         run: npm install
 
       - name: Run Tests and Save Output
-        run:  npm test -- --json --outputFile=results.json || true
+        run:  npx jest --json --outputFile=results.json || true
 
       - name: ⚙️ Generate Result
         run: node generate-result.js
 
       - name: 🔍 Debug Result
         run: cat result.json
+
+      - name: 🔍 Debug Jest Output
+        run: |
+          echo "==== results.json ===="
+          cat results.json || echo "No results.json found"
 
       - name: 📡 Send Result to Server
         run: |
